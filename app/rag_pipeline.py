@@ -1,7 +1,7 @@
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
-def get_rag_chain(persist_dir="chroma_db"):
+def get_rag_components(persist_dir="chroma_db"):
     embeddings = OpenAIEmbeddings()
 
     vectordb = Chroma(

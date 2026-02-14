@@ -1,30 +1,32 @@
+import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
 
 
+def ingest_documents(data_dir: str = "data", persist_dir: str = "chroma_db"):
+    all_docs = []
 
-def ingest_document(pdf_path: str, persist_dir: str = "chroma_db"):
-    # Load PDF
-    loader = PyPDFLoader(pdf_path)
-    documents = loader.load()
+    for file in os.listdir(data_dir):
+        if file.endswith(".pdf"):
+            path = os.path.join(data_dir, file)
+            loader = PyPDFLoader(path)
+            docs = loader.load()
+            all_docs.extend(docs)
 
-    # Split into chunks
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=800,
         chunk_overlap=100
     )
-    chunks = splitter.split_documents(documents)
+    chunks = splitter.split_documents(all_docs)
 
-    # Convert to embeddings
     embeddings = OpenAIEmbeddings()
 
-    # Store in vector DB
-    vectordb = Chroma.from_documents(
+    Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
         persist_directory=persist_dir
     )
 
-    print("Document indexed successfully!")
+    print(f"Indexed {len(chunks)} chunks from {data_dir}")
