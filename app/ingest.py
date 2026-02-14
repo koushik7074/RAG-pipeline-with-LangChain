@@ -6,6 +6,11 @@ from langchain_chroma import Chroma
 
 
 def ingest_documents(data_dir: str = "data", persist_dir: str = "chroma_db"):
+    #Avoiding re-indexing
+    if os.path.exists(persist_dir) and os.listdir(persist_dir):
+        print("Vector DB already exists. Skipping ingestion.")
+        return
+    
     all_docs = []
 
     for file in os.listdir(data_dir):

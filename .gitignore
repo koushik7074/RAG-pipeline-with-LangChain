@@ -1,7 +1,27 @@
+# Environment variables
 .env
-\venv
-venv
-env
-__pycache__
-chroma_db
-data
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Vector DB
+chroma_db/
+
+# Local data files
+data/*.pdf
+!data/demo.pdf
+
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

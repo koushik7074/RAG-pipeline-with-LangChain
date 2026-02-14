@@ -1,4 +1,3 @@
-from ingest import ingest_documents
 from rag_pipeline import get_rag_components
 from dotenv import load_dotenv
 
@@ -39,19 +38,3 @@ def ask_question(query: str):
 
     return response.content, list(set(sources))
 
-
-
-if __name__ == "__main__":
-    ingest_documents("data")
-
-    while True:
-        q = input("\nAsk a question (or exit): ")
-        if q.lower() == "exit":
-            break
-
-        answer, sources = ask_question(q)
-
-        print("\nAnswer:", answer)
-        print("\nSources:")
-        for s in sources:
-            print("-", s)
